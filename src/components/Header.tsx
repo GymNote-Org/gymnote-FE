@@ -1,17 +1,19 @@
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {Ionicons} from '@expo/vector-icons';
+import {Image, StyleSheet, Text, View} from "react-native";
 
 const Header = () => {
     return (
       <View style={styles.container}>
-          <TouchableOpacity>
-              <Ionicons name="menu" size={24} color="black" />
-          </TouchableOpacity>
-          <Text style={styles.title}>Gym⚡️Note</Text>
-          <TouchableOpacity style={styles.calendarButton}>
-              <Text style={styles.calendarButton}>캘린더</Text>
-          </TouchableOpacity>
+          <View style={styles.logoSection}>
+              <Image
+                  source={require('../assets/header-logo.png')}
+                  style={styles.logoImg}
+                  resizeMode="contain"
+              />
+          </View>
+          <View style={styles.proSection}>
+              <Text style={styles.proMode}>PRO</Text>
+          </View>
       </View>
     );
 }
@@ -21,25 +23,27 @@ export default Header;
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingHorizontal: 4,
+        paddingVertical: 4,
         alignItems: 'center',
         justifyContent: 'space-between',
         borderBottomWidth: 1,
+        backgroundColor: '#fff',
         borderColor: '#ccc',
     },
-    title: {
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    calendarButton: {
-        backgroundColor: '#007bff',
-        paddingVertical: 4,
+    logoSection: {
+        paddingVertical: 2,
         paddingHorizontal: 12,
-        borderRadius: 6,
     },
-    calendarText: {
-        color: '#fff',
-        fontSize: 14,
+    logoImg: {
+        width: 40,
+    },
+    proSection: {
+        paddingVertical: 2,
+        paddingHorizontal: 12,
+    },
+    proMode: {
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 })
