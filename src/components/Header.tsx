@@ -23,27 +23,27 @@ export default Header;
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingHorizontal: 4,
+        paddingVertical: 4,
         alignItems: 'center',
         justifyContent: 'space-between',
         borderBottomWidth: 1,
-        borderColor: '#ccc',
+        backgroundColor: '#fff',
+        borderColor: '#161616',
     },
     logoSection: {
-        paddingVertical: 4,
+        paddingVertical: 2,
         paddingHorizontal: 12,
     },
     logoImg: {
-        width: 50,
-        height: 50,
+        width: 40,
     },
     proSection: {
-        paddingVertical: 4,
+        paddingVertical: 2,
         paddingHorizontal: 12,
     },
     proMode: {
-        fontSize: 24,
+        fontSize: 16,
         fontWeight: 'bold',
     },
 })

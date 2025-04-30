@@ -25,19 +25,20 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingVertical: 8,
         alignItems: 'center',
         justifyContent: 'space-between',
         borderTopWidth: 1,
-        backgroundColor: '#007bff',
+        backgroundColor: '#0367FC',
+        borderColor: '#0367FC',
     },
     footerButton: {
         paddingVertical: 4,
         paddingHorizontal: 12,
     },
     footerButtonText: {
-        color: '#000',
-        fontSize: 24,
+        color: '#161616',
+        fontSize: 20,
         fontWeight: 'bold',
     },
 })
