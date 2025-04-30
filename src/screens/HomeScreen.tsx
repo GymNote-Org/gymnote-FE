@@ -5,9 +5,9 @@ import RecentExerciseCard from "../components/RecentExerciseCard";
 import RoutineCard from "../components/RoutineCard";
 
 const dummyRecentExercises = [
-    { id: 1, title: "루틴 C", description: "하체", date: "2025.04.28", startTime: "오후 04:00", endTime: "오후 5:07", duration: "67분 05초", volume: "10,000kg", location: "신정동" },
-    { id: 2, title: "루틴 B", description: "등, 삼두", date: "2025.04.29", startTime: "오후 04:00", endTime: "오후 5:15", duration: "75분 07초", volume: "10,000kg", location: "신정동" },
     { id: 3, title: "루틴 A", description: "가슴, 이두", date: "2025.04.30", startTime: "오후 04:00", endTime: "오후 5:27", duration: "87분 08초", volume: "10,000kg", location: "신정동" },
+    { id: 2, title: "루틴 B", description: "등, 삼두", date: "2025.04.29", startTime: "오후 04:00", endTime: "오후 5:15", duration: "75분 07초", volume: "10,000kg", location: "신정동" },
+    { id: 1, title: "루틴 C", description: "하체", date: "2025.04.28", startTime: "오후 04:00", endTime: "오후 5:07", duration: "67분 05초", volume: "10,000kg", location: "신정동" },
 ];
 
 const dummyRoutines = [
