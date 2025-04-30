@@ -38,11 +38,12 @@ const styles = StyleSheet.create({
         width: 280,
         height: 176.84,
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: '#161616',
         borderRadius: 12,
         padding: 12,
         marginRight: 12,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        color: '#161616',
     },
     header: {
         marginBottom: 8,

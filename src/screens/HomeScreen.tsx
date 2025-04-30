@@ -85,12 +85,13 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: '#dddddd'
     },
     userCard: {
         padding: 16,
         flexDirection: 'row',
         marginBottom: 24,
+        backgroundColor: '#fff'
     },
     avatarBox: {
         width: 100,
@@ -104,7 +105,8 @@ const styles = StyleSheet.create({
         height: 100,
     },
     userInfo: {
-        fontSize: 12,
+        fontSize: 11,
+        color: '#161616',
         justifyContent: 'space-between',
     },
     horizontalList: {
