@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         borderBottomWidth: 1,
         backgroundColor: '#fff',
-        borderColor: '#161616',
+        borderColor: '#ccc',
     },
     logoSection: {
         paddingVertical: 2,
