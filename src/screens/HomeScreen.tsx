@@ -5,15 +5,16 @@ import RecentExerciseCard from "../components/RecentExerciseCard";
 import RoutineCard from "../components/RoutineCard";
 
 const dummyRecentExercises = [
-    { id: 3, title: "루틴 A", description: "가슴, 이두", date: "2025.04.30", startTime: "오후 04:00", endTime: "오후 5:27", duration: "87분 08초", volume: "10,000kg", location: "신정동" },
-    { id: 2, title: "루틴 B", description: "등, 삼두", date: "2025.04.29", startTime: "오후 04:00", endTime: "오후 5:15", duration: "75분 07초", volume: "10,000kg", location: "신정동" },
-    { id: 1, title: "루틴 C", description: "하체", date: "2025.04.28", startTime: "오후 04:00", endTime: "오후 5:07", duration: "67분 05초", volume: "10,000kg", location: "신정동" },
+    { id: 4, title: "루틴 A", description: "가슴, 이두", date: "2025.04.30", startTime: "오후 04:00", endTime: "오후 5:27", duration: "87분 08초", volume: "10,000kg", location: "신정동" },
+    { id: 3, title: "루틴 B", description: "등, 삼두", date: "2025.04.29", startTime: "오후 04:00", endTime: "오후 5:15", duration: "75분 07초", volume: "10,000kg", location: "신정동" },
+    { id: 2, title: "루틴 C", description: "하체", date: "2025.04.28", startTime: "오후 04:00", endTime: "오후 5:07", duration: "67분 05초", volume: "10,000kg", location: "신정동" },
 ];
 
 const dummyRoutines = [
     { id: 1, title: "루틴 A", description: "가슴, 이두" },
     { id: 2, title: "루틴 B", description: "등, 삼두" },
     { id: 3, title: "루틴 C", description: "하체" },
+    { id: 4, title: "루틴 A", description: "가슴, 이두" },
     { id: 999999, isAddCard: true },    // 루틴 추가 카드
 ];
 
@@ -69,11 +70,11 @@ export default function HomeScreen() {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.horizontalList}
-                renderItem={({ item }) => {
+                renderItem={({ item, index }) => {
                     if ('isAddCard' in item && item.isAddCard) {    // isAddCard가 true이면 루틴 추가 버튼 카드 렌더링
-                        return <RoutineCard isAddCard onPress={handleAddRoutine} />;
+                        return <RoutineCard isAddCard onPress={handleAddRoutine} index={index} />;
                     }
-                    return <RoutineCard id={item.id} title={item.title} description={item.description} />;
+                    return <RoutineCard id={item.id} title={item.title} description={item.description} index={index} />;
                 }}
             />
 
@@ -85,7 +86,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#dddddd'
+        backgroundColor: '#fAfAfA'
     },
     userCard: {
         padding: 16,
