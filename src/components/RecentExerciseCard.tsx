@@ -6,8 +6,6 @@ type Props = {
         title: string;
         description: string;
         date: string;
-        startTime: string;
-        endTime: string;
         duration: string;
         volume: string;
         location: string;
@@ -25,7 +23,7 @@ const RecentExerciseCard = (exercise: Props) => {
                 </View>
             </View>
             <Text style={styles.info}>총 볼륨: {exercise.exercise.volume}</Text>
-            <Text style={styles.info}>총 운동시간: {exercise.exercise.duration} ({exercise.exercise.startTime} ~ {exercise.exercise.endTime})</Text>
+            <Text style={styles.info}>총 운동시간: {exercise.exercise.duration}</Text>
             <View style={styles.graphPlaceholder}>
                 <Text>그래프 박스</Text>
             </View>
@@ -38,6 +36,7 @@ export default RecentExerciseCard;
 const styles = StyleSheet.create({
     card: {
         width: 280,
+        height: 176.84,
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 12,
@@ -50,19 +49,19 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 14,
     },
     meta: {
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
     info: {
-        fontSize: 14,
+        fontSize: 12,
         marginTop: 2,
     },
     graphPlaceholder: {
         marginTop: 8,
-        height: 100,
+        height: 70,
         backgroundColor: '#eee',
         justifyContent: 'center',
         alignItems: 'center',

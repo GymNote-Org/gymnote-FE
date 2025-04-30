@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
         height: 100,
     },
     userInfo: {
+        fontSize: 12,
         justifyContent: 'space-between',
     },
     horizontalList: {
