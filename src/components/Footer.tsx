@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     },
     footerButtonText: {
         color: '#161616',
+        fontFamily: 'GiantsInline',
         fontSize: 20,
-        fontWeight: 'bold',
     },
-})
+});

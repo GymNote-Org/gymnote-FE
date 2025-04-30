@@ -23,7 +23,7 @@ const RoutineCard = ({ id, title, description, isAddCard = false, onPress, index
 
     return (
         <TouchableOpacity style={[styles.card, {backgroundColor}, isAddCard && styles.addCard]} onPress={onPress}>
-            <Text style={[styles.cardText, {color}]}>{isAddCard ? '+' : title}</Text>
+            <Text style={[!isAddCard && styles.cardFont, styles.cardText, {color}]}>{isAddCard ? '+' : title}</Text>
         </TouchableOpacity>
     );
 }
@@ -41,9 +41,12 @@ const styles = StyleSheet.create({
     },
     addCard: {
         opacity: .5,
+        fontWeight: 'bold',
+    },
+    cardFont: {
+        fontFamily: 'GiantsInline',
     },
     cardText: {
         fontSize: 24,
-        fontWeight: 'bold',
     },
 });
