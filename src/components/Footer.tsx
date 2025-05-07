@@ -5,11 +5,15 @@ const Footer = () => {
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.footerButton}>
-                <Text style={styles.footerButtonText}>게시판</Text>
+                <Text style={styles.footerButtonText}>루틴분석</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.footerButton}>
                 <Text style={styles.footerButtonText}>홈</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.footerButton}>
+                <Text style={styles.footerButtonText}>소셜</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.footerButton}>
