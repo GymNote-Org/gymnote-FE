@@ -3,6 +3,11 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import RecentExerciseCard from "../components/RecentExerciseCard";
 import RoutineCard from "../components/RoutineCard";
+import {useNavigation} from "@react-navigation/native";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import {RootStackParamList} from "../navigation/RootNavigator";
+
+type HomeScreenProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 const dummyRecentExercises = [
     { id: 4, title: "루틴 A", description: "가슴, 이두", date: "2025.04.30", startTime: "오후 04:00", endTime: "오후 5:27", duration: "87분 08초", volume: "10,000kg", location: "신정동" },
@@ -23,8 +28,10 @@ const dummyRoutines = [
  * @constructor
  */
 export default function HomeScreen() {
+    const navigation = useNavigation<HomeScreenProp>();
+
     const handleAddRoutine = () => {
-        console.log('루틴 생성 버튼 클릭');
+        navigation.navigate('AddRoutine');
     }
 
     return (

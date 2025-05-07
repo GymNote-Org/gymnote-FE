@@ -10,7 +10,7 @@ type LoginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
  * @constructor
  */
 export default function LoginScreen() {
-    const navigation = useNavigation<LoginScreenProp>()
+    const navigation = useNavigation<LoginScreenProp>();
 
     const handleLogin = () => {
         // TODO: 실제 로그인 후 처리하도록 수정해야 함
