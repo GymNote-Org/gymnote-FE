@@ -11,7 +11,7 @@
 |[![lgm1007](https://github.com/lgm1007.png?size=200)](https://github.com/lgm1007)|[![Chiloli](https://github.com/Chiloli.png?size=200)](https://github.com/Chiloli)
 
 ## 📚 기술스택 구성
-- React Native + Expo
+- React Native v19.0.0 + Expo v53.0.8
 - Nodejs v18.20.8
 - pnpm v10.10.0
 
