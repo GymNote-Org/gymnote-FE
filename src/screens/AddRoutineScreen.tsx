@@ -1,7 +1,8 @@
 import {useState} from "react";
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import WeightNumberPicker from "../components/WeightNumberPicker";
 
 /**
  * 루틴 추가 화면
@@ -30,6 +31,12 @@ export default function AddRoutineScreen() {
             ],
         },
     ]);
+
+    // 체중, 운동횟수 등 모달 사용 용 상태 구성
+    const [isWeightPickerVisible, setWeightPickerVisible] = useState(false);
+    const [selectedExerciseIndex, setSelectedExerciseIndex] = useState<number | null>(null);
+    const [selectedSetsIndex, setSelectedSetsIndex] = useState<number | null>(null);
+    const [tempWeight, setTempWeight] = useState<number>(0);
 
     /**
      * 운동 세트 카드 추가 이벤트
@@ -66,9 +73,37 @@ export default function AddRoutineScreen() {
         setExercises(newExercises);
     };
 
+    /**
+     * 무게 숫자 터치 시 무게 조정 모달 띄우기 이벤트
+     */
+    const handleWeightPress = (exerciseIndex: number, setsIndex: number) => {
+        const currentWeight = Number(exercises[exerciseIndex].sets[setsIndex].weight);
+        setSelectedExerciseIndex(exerciseIndex);
+        setSelectedSetsIndex(setsIndex);
+        setTempWeight(currentWeight);
+        setWeightPickerVisible(true);
+    };
+
+    /**
+     * 무게 조정 모달 닫을 때 체중 업데이트 이벤트
+     */
+    const handleWeightChangeModalDismiss = () => {
+        if (
+            selectedExerciseIndex !== null &&
+            selectedSetsIndex !== null
+        ) {
+            setExercises(prevExercises => {
+                const updateExercises = [...prevExercises];
+                updateExercises[selectedExerciseIndex].sets[selectedSetsIndex].weight = tempWeight;
+                return updateExercises;
+            });
+        }
+        setWeightPickerVisible(false);
+    }
+
     return (
-        <View style={styles.container}>
-            <Header />
+        <><View style={styles.container}>
+            <Header/>
 
             {/* 루틴 화면 탑 */}
             <View style={styles.routineScreenHeader}>
@@ -86,7 +121,8 @@ export default function AddRoutineScreen() {
             <ScrollView>
                 {exercises.map((exercise, idx) => (
                     <View key={idx} style={styles.exerciseCardWrap}>
-                        <TouchableOpacity style={styles.exerciseCard} activeOpacity={1.0} onPress={() => toggleExerciseExpand(idx)}>
+                        <TouchableOpacity style={styles.exerciseCard} activeOpacity={1.0}
+                                          onPress={() => toggleExerciseExpand(idx)}>
                             <Text style={styles.exerciseCardText}>
                                 {exercise.name} {exercise.isExpanded ? '▲' : '▼'}
                             </Text>
@@ -99,7 +135,9 @@ export default function AddRoutineScreen() {
                                 {exercise.sets.map((set, setIdx) => (
                                     <View key={setIdx} style={styles.setsCard}>
                                         <Text>{setIdx + 1}set</Text>
-                                        <Text>{set.weight} kg</Text>
+                                        <TouchableOpacity onPress={() => handleWeightPress(idx, setIdx)}>
+                                            <Text>{set.weight} kg</Text>
+                                        </TouchableOpacity>
                                         <Text>{set.reps} Reps</Text>
                                         <TouchableOpacity onPress={() => handleDeleteSets(idx, setIdx)}>
                                             <Text>🅇</Text>
@@ -122,8 +160,37 @@ export default function AddRoutineScreen() {
                     <Text style={styles.addExerciseButtonText}> + </Text>
                 </TouchableOpacity>
             </ScrollView>
-            <Footer />
+            <Footer/>
         </View>
+        <Modal
+            visible={isWeightPickerVisible}
+            transparent
+            animationType="slide"
+            onRequestClose={() => setWeightPickerVisible(false)}
+        >
+            <View style={styles.weightModalOverlay}>
+                <Pressable
+                    style={styles.weightModalBackground}
+                    onPress={() => {
+                        if (selectedExerciseIndex !== null && selectedSetsIndex !== null) {
+                            const updateExercises = [...exercises];
+                            updateExercises[selectedExerciseIndex].sets[selectedSetsIndex].weight = tempWeight;
+                            setExercises(updateExercises);
+                        }
+                        setWeightPickerVisible(false);
+                }}/>
+                    <View style={styles.weightModalContent}>
+                        <WeightNumberPicker
+                            initialValue={Number(
+                                selectedExerciseIndex !== null && selectedSetsIndex !== null
+                                    ? exercises[selectedExerciseIndex].sets[selectedSetsIndex].weight
+                                    : 0
+                            )}
+                            onValueChange={(value) => setTempWeight(value)}
+                        />
+                    </View>
+            </View>
+        </Modal></>
     );
 }
 
@@ -211,5 +278,22 @@ const styles = StyleSheet.create({
     addExerciseButtonText: {
         color: '#fff',
         fontWeight: 'bold',
+    },
+    weightModalOverlay: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    weightModalBackground: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    },
+    weightModalContent: {
+        backgroundColor: '#fff',
+        paddingVertical: 24,
+        borderRadius: 16,
+        elevation: 5,
+        width: '90%',
+        alignItems: 'center',
     },
 });
