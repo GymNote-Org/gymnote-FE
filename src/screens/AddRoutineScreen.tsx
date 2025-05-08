@@ -3,6 +3,7 @@ import {Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import WeightNumberPicker from "../components/WeightNumberPicker";
+import RepsNumberPicker from "../components/RepsNumberPicker";
 
 /**
  * 루틴 추가 화면
@@ -33,10 +34,12 @@ export default function AddRoutineScreen() {
     ]);
 
     // 체중, 운동횟수 등 모달 사용 용 상태 구성
-    const [isWeightPickerVisible, setWeightPickerVisible] = useState(false);
     const [selectedExerciseIndex, setSelectedExerciseIndex] = useState<number | null>(null);
     const [selectedSetsIndex, setSelectedSetsIndex] = useState<number | null>(null);
+    const [isWeightPickerVisible, setWeightPickerVisible] = useState(false);
+    const [isRepsPickerVisible, setRepsPickerVisible] = useState(false);
     const [tempWeight, setTempWeight] = useState<number>(0);
+    const [tempReps, setTempReps] = useState<number>(0);
 
     /**
      * 운동 세트 카드 추가 이벤트
@@ -82,6 +85,17 @@ export default function AddRoutineScreen() {
         setSelectedSetsIndex(setsIndex);
         setTempWeight(currentWeight);
         setWeightPickerVisible(true);
+    };
+
+    /**
+     * 횟수 숫자 터치 시 횟수 조정 모달 띄우기 이벤트
+     */
+    const handleRepsPress = (exerciseIndex: number, setsIndex: number) => {
+        const currentReps = Number(exercises[exerciseIndex].sets[setsIndex].reps);
+        setSelectedExerciseIndex(exerciseIndex);
+        setSelectedSetsIndex(setsIndex);
+        setTempReps(currentReps);
+        setRepsPickerVisible(true);
     };
 
     /**
@@ -138,7 +152,9 @@ export default function AddRoutineScreen() {
                                         <TouchableOpacity onPress={() => handleWeightPress(idx, setIdx)}>
                                             <Text>{set.weight} kg</Text>
                                         </TouchableOpacity>
-                                        <Text>{set.reps} Reps</Text>
+                                        <TouchableOpacity onPress={() => handleRepsPress(idx, setIdx)}>
+                                            <Text>{set.reps} Reps</Text>
+                                        </TouchableOpacity>
                                         <TouchableOpacity onPress={() => handleDeleteSets(idx, setIdx)}>
                                             <Text>🅇</Text>
                                         </TouchableOpacity>
@@ -190,7 +206,38 @@ export default function AddRoutineScreen() {
                         />
                     </View>
             </View>
-        </Modal></>
+        </Modal>
+        <Modal
+            visible={isRepsPickerVisible}
+            transparent
+            animationType="slide"
+            onRequestClose={() => setRepsPickerVisible(false)}
+        >
+            <View style={styles.repsModalOverlay}>
+                <Pressable
+                    style={styles.repsModalBackground}
+                    onPress={() => {
+                        if (selectedExerciseIndex !== null && selectedSetsIndex !== null) {
+                            const updateExercises = [...exercises];
+                            updateExercises[selectedExerciseIndex].sets[selectedSetsIndex].reps = tempReps;
+                            setExercises(updateExercises);
+                        }
+                        setRepsPickerVisible(false);
+                    }}
+                />
+                <View style={styles.repsModalContent}>
+                    <RepsNumberPicker
+                        selected={
+                            selectedExerciseIndex !== null && selectedSetsIndex !== null
+                                ? Number(exercises[selectedExerciseIndex].sets[selectedSetsIndex].reps)
+                                : 1
+                        }
+                        onSelect={(value) => setTempReps(value)}
+                    />
+                </View>
+            </View>
+        </Modal>
+        </>
     );
 }
 
@@ -295,5 +342,19 @@ const styles = StyleSheet.create({
         elevation: 5,
         width: '90%',
         alignItems: 'center',
+    },
+    repsModalOverlay: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+    },
+    repsModalBackground: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    },
+    repsModalContent: {
+        backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 8,
     },
 });
