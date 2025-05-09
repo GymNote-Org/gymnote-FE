@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import {useState} from "react";
 import {Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -42,9 +42,6 @@ export default function AddRoutineScreen() {
     const [tempWeight, setTempWeight] = useState<number>(0);
     const [tempReps, setTempReps] = useState<number>(0);
     const [visibleExerciseDeleteMenuIndex, setVisibleExerciseDeleteMenuIndex] = useState<number | null>(null);
-
-    // ref 참조
-    const deleteMenuRef = useRef(null);
 
     /**
      * 운동 세트 카드 추가 이벤트
@@ -142,6 +139,7 @@ export default function AddRoutineScreen() {
                         {/* 운동 종목 카드 삭제 메뉴 버튼 */}
                         <Menu
                             visible={visibleExerciseDeleteMenuIndex === idx}
+                            onDismiss={() => setVisibleExerciseDeleteMenuIndex(null)}
                             anchor={
                                 <TouchableOpacity
                                     style={styles.exerciseCard} activeOpacity={1.0}
