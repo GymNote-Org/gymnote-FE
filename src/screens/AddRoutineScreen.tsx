@@ -1,9 +1,10 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import WeightNumberPicker from "../components/WeightNumberPicker";
 import RepsNumberPicker from "../components/RepsNumberPicker";
+import {Menu} from "react-native-paper";
 
 /**
  * 루틴 추가 화면
@@ -40,6 +41,10 @@ export default function AddRoutineScreen() {
     const [isRepsPickerVisible, setRepsPickerVisible] = useState(false);
     const [tempWeight, setTempWeight] = useState<number>(0);
     const [tempReps, setTempReps] = useState<number>(0);
+    const [visibleExerciseDeleteMenuIndex, setVisibleExerciseDeleteMenuIndex] = useState<number | null>(null);
+
+    // ref 참조
+    const deleteMenuRef = useRef(null);
 
     /**
      * 운동 세트 카드 추가 이벤트
@@ -77,6 +82,20 @@ export default function AddRoutineScreen() {
     };
 
     /**
+     * 운동 종목 카드 삭제 메뉴 버튼 열림
+     */
+    const toggleExerciseDeleteMenu = (exerciseIndex: number) => {
+        setVisibleExerciseDeleteMenuIndex((prevIndex) => prevIndex === exerciseIndex ? null : exerciseIndex);
+    };
+
+    /**
+     * 운동 종목 카드 삭제 버튼 이벤트
+     */
+    const handleExerciseDelete = (exerciseIndex: number) => {
+        setExercises((currentExercises) => currentExercises.filter((_, index) => index !== exerciseIndex));
+    };
+
+    /**
      * 무게 숫자 터치 시 무게 조정 모달 띄우기 이벤트
      */
     const handleWeightPress = (exerciseIndex: number, setsIndex: number) => {
@@ -98,22 +117,6 @@ export default function AddRoutineScreen() {
         setRepsPickerVisible(true);
     };
 
-    /**
-     * 무게 조정 모달 닫을 때 체중 업데이트 이벤트
-     */
-    const handleWeightChangeModalDismiss = () => {
-        if (
-            selectedExerciseIndex !== null &&
-            selectedSetsIndex !== null
-        ) {
-            setExercises(prevExercises => {
-                const updateExercises = [...prevExercises];
-                updateExercises[selectedExerciseIndex].sets[selectedSetsIndex].weight = tempWeight;
-                return updateExercises;
-            });
-        }
-        setWeightPickerVisible(false);
-    }
 
     return (
         <><View style={styles.container}>
@@ -134,13 +137,25 @@ export default function AddRoutineScreen() {
 
             <ScrollView>
                 {exercises.map((exercise, idx) => (
+                    // 운동 종목 카드
                     <View key={idx} style={styles.exerciseCardWrap}>
-                        <TouchableOpacity style={styles.exerciseCard} activeOpacity={1.0}
-                                          onPress={() => toggleExerciseExpand(idx)}>
-                            <Text style={styles.exerciseCardText}>
-                                {exercise.name} {exercise.isExpanded ? '▲' : '▼'}
-                            </Text>
-                        </TouchableOpacity>
+                        {/* 운동 종목 카드 삭제 메뉴 버튼 */}
+                        <Menu
+                            visible={visibleExerciseDeleteMenuIndex === idx}
+                            anchor={
+                                <TouchableOpacity
+                                    style={styles.exerciseCard} activeOpacity={1.0}
+                                    onPress={() => toggleExerciseExpand(idx)}
+                                    onLongPress={() => toggleExerciseDeleteMenu(idx)}
+                                >
+                                    <Text style={styles.exerciseCardText}>
+                                        {exercise.name} {exercise.isExpanded ? '▲' : '▼'}
+                                    </Text>
+                                </TouchableOpacity>
+                            }
+                        >
+                            <Menu.Item onPress={() => { setVisibleExerciseDeleteMenuIndex(null); handleExerciseDelete(idx); }} title="삭제"/>
+                        </Menu>
 
                         {/* 세트 카드 파트 */}
                         {exercise.isExpanded && (
@@ -168,7 +183,6 @@ export default function AddRoutineScreen() {
                             </>
                         )}
                     </View>
-
                 ))}
 
                 {/* 운동 항목 추가 버튼 */}
@@ -178,6 +192,8 @@ export default function AddRoutineScreen() {
             </ScrollView>
             <Footer/>
         </View>
+
+        {/* 중량 조절 모달 */}
         <Modal
             visible={isWeightPickerVisible}
             transparent
@@ -207,6 +223,8 @@ export default function AddRoutineScreen() {
                     </View>
             </View>
         </Modal>
+
+        {/* 운동 횟수 조절 모달 */}
         <Modal
             visible={isRepsPickerVisible}
             transparent

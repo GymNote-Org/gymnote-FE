@@ -3,6 +3,7 @@ import {View} from "react-native";
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import {useCallback, useEffect, useState} from "react";
+import {PaperProvider} from "react-native-paper";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,8 +38,10 @@ export default function App() {
     }
 
     return (
-        <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-            <RootNavigator />
-        </View>
+        <PaperProvider>
+            <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+                <RootNavigator />
+            </View>
+        </PaperProvider>
     );
 }
