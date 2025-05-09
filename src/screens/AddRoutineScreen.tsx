@@ -5,6 +5,8 @@ import Footer from "../components/Footer";
 import WeightNumberPicker from "../components/WeightNumberPicker";
 import RepsNumberPicker from "../components/RepsNumberPicker";
 import {Menu} from "react-native-paper";
+import ExerciseFilterDropDown from "../components/ExerciseFilterDropDown";
+import Exercise from "../assets/type/Exercise";
 
 /**
  * 루틴 추가 화면
@@ -14,6 +16,7 @@ export default function AddRoutineScreen() {
     const [exercises, setExercises] = useState([
         {
             name: '벤치프레스',
+            target: ['가슴'],
             isExpanded: true,
             sets: [
                 { weight: 60, reps: 12 },
@@ -23,7 +26,8 @@ export default function AddRoutineScreen() {
             ],
         },
         {
-            name: '케이블익스텐션',
+            name: '케이블 오버헤드 익스텐션',
+            target: ['삼두'],
             isExpanded: false,
             sets: [
                 { weight: 25, reps: 12 },
@@ -42,6 +46,7 @@ export default function AddRoutineScreen() {
     const [tempWeight, setTempWeight] = useState<number>(0);
     const [tempReps, setTempReps] = useState<number>(0);
     const [visibleExerciseDeleteMenuIndex, setVisibleExerciseDeleteMenuIndex] = useState<number | null>(null);
+    const [isExerciseDropDownVisible, setExerciseDropDownVisible] = useState(false);
 
     /**
      * 운동 세트 카드 추가 이벤트
@@ -66,7 +71,7 @@ export default function AddRoutineScreen() {
      * 운동 종목 추가 이벤트
      */
     const handleAddExercise = () => {
-        setExercises([...exercises, { name: '운동 이름', isExpanded: false, sets: [] }]);
+        setExercises([...exercises, { name: '운동 이름', target: [], isExpanded: false, sets: [] }]);
     };
 
     /**
@@ -84,6 +89,27 @@ export default function AddRoutineScreen() {
     const toggleExerciseDeleteMenu = (exerciseIndex: number) => {
         setVisibleExerciseDeleteMenuIndex((prevIndex) => prevIndex === exerciseIndex ? null : exerciseIndex);
     };
+
+    /**
+     * 운동 종목 카드 이름 드롭다운 열림 이벤트
+     */
+    const handleExerciseNamePress = (exerciseIndex: number) => {
+        setSelectedExerciseIndex(exerciseIndex);
+        setExerciseDropDownVisible(true);
+    }
+
+    /**
+     * 운동 종목 이름 드롭다운에서 운동 선택 시 이름 변경 이벤트
+     */
+    const handleExerciseNameChange = (exercise: Exercise) => {
+        if (selectedExerciseIndex !== null) {
+            const updateExercises = [...exercises];
+            updateExercises[selectedExerciseIndex].name = exercise.name;
+            updateExercises[selectedExerciseIndex].target = exercise.target;
+            setExercises(updateExercises);
+        }
+        setExerciseDropDownVisible(false);
+    }
 
     /**
      * 운동 종목 카드 삭제 버튼 이벤트
@@ -146,10 +172,18 @@ export default function AddRoutineScreen() {
                                     onLongPress={() => toggleExerciseDeleteMenu(idx)}
                                 >
                                     <View style={styles.exerciseCard}>
-                                        <TouchableOpacity activeOpacity={1.0}>
-                                            <Text style={styles.exerciseCardText}>
-                                                {exercise.name}
-                                            </Text>
+                                        <TouchableOpacity
+                                            activeOpacity={1.0}
+                                            onPress={() => handleExerciseNamePress(idx)}
+                                        >
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <Text style={styles.exerciseCardText}>
+                                                    {exercise.name}
+                                                </Text>
+                                                <Text style={styles.exerciseCardTargetText}>
+                                                    ({exercise.target.join(", ")})
+                                                </Text>
+                                            </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             style={{ marginLeft: 12 }}
@@ -202,6 +236,21 @@ export default function AddRoutineScreen() {
             </ScrollView>
             <Footer/>
         </View>
+
+        {/* 중량 조절 모달 */}
+        {isExerciseDropDownVisible && (
+            <Modal
+                visible={isExerciseDropDownVisible}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setExerciseDropDownVisible(false)}
+            >
+                <View>
+                    <TouchableOpacity style={styles.dropDownModalBackground} onPress={() => setExerciseDropDownVisible(false)} />
+                    <ExerciseFilterDropDown handleExerciseNameChange={(exercise) => handleExerciseNameChange(exercise)} />
+                </View>
+            </Modal>
+        )}
 
         {/* 중량 조절 모달 */}
         <Modal
@@ -323,6 +372,11 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
     },
+    exerciseCardTargetText: {
+        color: '#fff',
+        fontSize: 12,
+        marginLeft: 4,
+    },
     setsCard: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -355,6 +409,11 @@ const styles = StyleSheet.create({
     addExerciseButtonText: {
         color: '#fff',
         fontWeight: 'bold',
+    },
+    dropDownModalBackground: {
+        position: "absolute",
+        top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
     },
     weightModalOverlay: {
         flex: 1,
