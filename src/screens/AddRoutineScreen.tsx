@@ -142,13 +142,25 @@ export default function AddRoutineScreen() {
                             onDismiss={() => setVisibleExerciseDeleteMenuIndex(null)}
                             anchor={
                                 <TouchableOpacity
-                                    style={styles.exerciseCard} activeOpacity={1.0}
-                                    onPress={() => toggleExerciseExpand(idx)}
+                                    activeOpacity={1.0}
                                     onLongPress={() => toggleExerciseDeleteMenu(idx)}
                                 >
-                                    <Text style={styles.exerciseCardText}>
-                                        {exercise.name} {exercise.isExpanded ? '▲' : '▼'}
-                                    </Text>
+                                    <View style={styles.exerciseCard}>
+                                        <TouchableOpacity activeOpacity={1.0}>
+                                            <Text style={styles.exerciseCardText}>
+                                                {exercise.name}
+                                            </Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={{ marginLeft: 12 }}
+                                            activeOpacity={1.0}
+                                            onPress={() => toggleExerciseExpand(idx)}
+                                        >
+                                            <Text style={styles.exerciseCardText}>
+                                                {exercise.isExpanded ? '▲' : '▼'}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </TouchableOpacity>
                             }
                         >
@@ -301,6 +313,8 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     exerciseCard: {
+        flexDirection: 'row',
+        alignItems: 'center',
         backgroundColor: '#0367FC',
         padding: 10,
         borderRadius: 2,
