@@ -19,7 +19,7 @@ const RepsNumberPicker = ({ selected, onSelect }: Props) => {
     useEffect(() => {
         setTimeout(() => {
             listRef.current?.scrollToIndex({
-                index: selected - 1,
+                index: (selected <= 0) ? 1 : selected - 1,
                 animated: false,
             });
         }, 0);
