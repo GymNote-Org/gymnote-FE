@@ -47,15 +47,20 @@ export default function HomeScreen() {
                         resizeMode="contain"
                     />
                 </View>
-                <View style={styles.userInfo}>
-                    <Text>운동목표: 근육량 증가</Text>
-                    <Text>현재체중: 76kg</Text>
-                    <Text>목표체중: 80kg</Text>
-                    <Text>골격근량: 33kg</Text>
-                    <Text>체지방량: 17%</Text>
-                </View>
-                <View style={styles.userInfo}>
-                    <Text>보유코인: 0 코인</Text>
+                <View style={styles.userInfoBox}>
+                    <Text style={styles.userGoalText}>운동목표: 근육량 증가</Text>
+                    <View style={styles.userSocialIcons}>
+                        <Image
+                            source={require('../assets/sns_instagram.png')}
+                            style={styles.snsIconImg}
+                            resizeMode="contain"
+                        />
+                        <Image
+                            source={require('../assets/sns_facebook.png')}
+                            style={styles.snsIconImg}
+                            resizeMode="contain"
+                        />
+                    </View>
                 </View>
             </View>
 
@@ -113,10 +118,22 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
     },
-    userInfo: {
-        fontSize: 11,
+    userInfoBox: {
+        alignItems: 'flex-start',
+    },
+    userGoalText: {
+        fontSize: 12,
         color: '#161616',
-        justifyContent: 'space-between',
+    },
+    userSocialIcons: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: 46,
+    },
+    snsIconImg: {
+        width: 24,
+        height: 24,
+        marginHorizontal: 4,
     },
     horizontalList: {
         paddingHorizontal: 16,
