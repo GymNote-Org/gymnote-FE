@@ -1,14 +1,19 @@
 import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {useNavigation} from "@react-navigation/native";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import {RootStackParamList} from "../navigation/RootNavigator";
 
 const Footer = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.footerButton}>
                 <Text style={styles.footerButtonText}>루틴분석</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.footerButton}>
+            <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Home')}>
                 <Text style={styles.footerButtonText}>홈</Text>
             </TouchableOpacity>
 
