@@ -1,7 +1,6 @@
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import RecentExerciseCard from "../components/RecentExerciseCard";
 import RoutineCard from "../components/RoutineCard";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
@@ -9,10 +8,9 @@ import {RootStackParamList} from "../navigation/RootNavigator";
 
 type HomeScreenProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
-const dummyRecentExercises = [
-    { id: 4, title: "루틴 A", description: "가슴, 이두", date: "2025.04.30", startTime: "오후 04:00", endTime: "오후 5:27", duration: "87분 08초", volume: "10,000kg", location: "신정동" },
-    { id: 3, title: "루틴 B", description: "등, 삼두", date: "2025.04.29", startTime: "오후 04:00", endTime: "오후 5:15", duration: "75분 07초", volume: "10,000kg", location: "신정동" },
-    { id: 2, title: "루틴 C", description: "하체", date: "2025.04.28", startTime: "오후 04:00", endTime: "오후 5:07", duration: "67분 05초", volume: "10,000kg", location: "신정동" },
+const dummyRecentExerciseLogs = [
+    { id: 1, title: "루틴. 가슴, 이두", date: "2025.04.29", startTime: "오후 04:00", endTime: "오후 5:27", duration: "87분 08초", setCounts: 14, volume: "10,000kg" },
+    { id: 2, title: "루틴. 등, 삼두", date: "2025.04.30", startTime: "오후 04:00", endTime: "오후 5:15", duration: "75분 07초", setCounts: 18, volume: "10,000kg" },
 ];
 
 const dummyRoutines = [
@@ -39,6 +37,21 @@ export default function HomeScreen() {
             <Header />
 
             {/* 유저 정보 카드 */}
+            <View style={styles.userPersonalBox}>
+                <Text style={{ fontSize: 14, color: '#0367FC', }}>트랄랄레로 트랄랄라</Text>
+                <View style={styles.userSocialIcons}>
+                    <Image
+                        source={require('../assets/sns_instagram.png')}
+                        style={styles.snsIconImg}
+                        resizeMode="contain"
+                    />
+                    <Image
+                        source={require('../assets/sns_facebook.png')}
+                        style={styles.snsIconImg}
+                        resizeMode="contain"
+                    />
+                </View>
+            </View>
             <View style={styles.userCard}>
                 <View style={styles.avatarBox}>
                     <Image
@@ -49,31 +62,34 @@ export default function HomeScreen() {
                 </View>
                 <View style={styles.userInfoBox}>
                     <Text style={styles.userGoalText}>운동목표: 근육량 증가</Text>
-                    <View style={styles.userSocialIcons}>
-                        <Image
-                            source={require('../assets/sns_instagram.png')}
-                            style={styles.snsIconImg}
-                            resizeMode="contain"
-                        />
-                        <Image
-                            source={require('../assets/sns_facebook.png')}
-                            style={styles.snsIconImg}
-                            resizeMode="contain"
-                        />
-                    </View>
+                    <Text style={styles.userExerciseLogTitle}>이전운동</Text>
+                    <ScrollView style={{ height: 120 }}>
+                        {dummyRecentExerciseLogs.map((exerciseLog) => (
+                            <View style={styles.userExerciseLogContainer}>
+                                <View>
+                                    <Text style={styles.userExerciseLogTextImportant}>- {exerciseLog.title}</Text>
+                                    <Text style={styles.userExerciseLogTextPlain}>{exerciseLog.date}</Text>
+                                </View>
+                                <View>
+                                    <Text style={styles.userExerciseLogTextPlain}>{exerciseLog.duration}</Text>
+                                    <Text style={styles.userExerciseLogTextImportant}>{exerciseLog.setCounts} SET 총볼륨 {exerciseLog.volume}</Text>
+                                </View>
+                            </View>
+                        ))}
+                    </ScrollView>
                 </View>
             </View>
 
             {/* 최근 운동 루틴 카드 리스트 */}
-            <FlatList
-                data={dummyRecentExercises}
-                keyExtractor={(item) => item.id.toString()}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.horizontalList}
-                inverted    // 최근 운동기록이 맨 오른쪽에 보이도록
-                renderItem={({ item }) => <RecentExerciseCard exercise={item} />}
-            />
+            {/*<FlatList*/}
+            {/*    data={dummyRecentExerciseLogs}*/}
+            {/*    keyExtractor={(item) => item.id.toString()}*/}
+            {/*    horizontal*/}
+            {/*    showsHorizontalScrollIndicator={false}*/}
+            {/*    contentContainerStyle={styles.horizontalList}*/}
+            {/*    inverted    // 최근 운동기록이 맨 오른쪽에 보이도록*/}
+            {/*    renderItem={({ item }) => <RecentExerciseCard exercise={item} />}*/}
+            {/*/>*/}
 
             {/* 하단 루틴 카드 리스트 */}
             <FlatList
@@ -101,6 +117,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#fAfAfA',
         fontFamily: 'Pretendard',
     },
+    userPersonalBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingBottom: 12,
+        backgroundColor: '#fff',
+    },
+    userSocialIcons: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+    snsIconImg: {
+        width: 24,
+        height: 24,
+        marginHorizontal: 4,
+    },
     userCard: {
         padding: 16,
         flexDirection: 'row',
@@ -123,17 +154,23 @@ const styles = StyleSheet.create({
     },
     userGoalText: {
         fontSize: 12,
+    },
+    userExerciseLogTitle: {
+        fontSize: 16,
+        color: '#161616',
+        marginBottom: 12,
+    },
+    userExerciseLogContainer: {
+        flexDirection: 'column',
+        paddingVertical: 4,
+    },
+    userExerciseLogTextImportant: {
+        fontSize: 14,
         color: '#161616',
     },
-    userSocialIcons: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        marginTop: 46,
-    },
-    snsIconImg: {
-        width: 24,
-        height: 24,
-        marginHorizontal: 4,
+    userExerciseLogTextPlain: {
+        fontSize: 12,
+        color: '#161616',
     },
     horizontalList: {
         paddingHorizontal: 16,
