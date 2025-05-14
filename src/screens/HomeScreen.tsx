@@ -5,6 +5,8 @@ import RoutineCard from "../components/RoutineCard";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {RootStackParamList} from "../navigation/RootNavigator";
+import ExerciseChartScroll from "../components/ExerciseChartScroll";
+import {ExerciseChartData} from "../assets/type/ExerciseChartData";
 
 type HomeScreenProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -19,6 +21,30 @@ const dummyRoutines = [
     { id: 3, title: "루틴 C", description: "하체" },
     { id: 4, title: "루틴 A", description: "가슴, 이두" },
     { id: 999999, isAddCard: true },    // 루틴 추가 카드
+];
+
+const exerciseChartDatas: ExerciseChartData[] = [
+    {
+        labels: [],
+        datasets: [
+            {
+                data: [10000, 10030, 9990, 10010],
+                color: () => 'rgb(255, 99, 132)',
+                strokeWidth: 2,
+            },
+            {
+                data: [5100, 4990, 5050, 5040],
+                color: () => 'rgb(54, 162, 23)',
+                strokeWidth: 2,
+            },
+            {
+                data: [6750, 6800, 6850, 6900],
+                color: () => 'rgb(75, 192, 192)',
+                strokeWidth: 2,
+            },
+        ],
+        legend: ['루틴 A', '루틴 B', '루틴 C'],
+    }
 ];
 
 /**
@@ -64,8 +90,8 @@ export default function HomeScreen() {
                     <Text style={styles.userGoalText}>운동목표: 근육량 증가</Text>
                     <Text style={styles.userExerciseLogTitle}>이전운동</Text>
                     <ScrollView style={{ height: 120 }}>
-                        {dummyRecentExerciseLogs.map((exerciseLog) => (
-                            <View style={styles.userExerciseLogContainer}>
+                        {dummyRecentExerciseLogs.map((exerciseLog, logIdx) => (
+                            <View style={styles.userExerciseLogContainer} key={logIdx.toString()}>
                                 <View>
                                     <Text style={styles.userExerciseLogTextImportant}>- {exerciseLog.title}</Text>
                                     <Text style={styles.userExerciseLogTextPlain}>{exerciseLog.date}</Text>
@@ -81,15 +107,7 @@ export default function HomeScreen() {
             </View>
 
             {/* 최근 운동 루틴 카드 리스트 */}
-            {/*<FlatList*/}
-            {/*    data={dummyRecentExerciseLogs}*/}
-            {/*    keyExtractor={(item) => item.id.toString()}*/}
-            {/*    horizontal*/}
-            {/*    showsHorizontalScrollIndicator={false}*/}
-            {/*    contentContainerStyle={styles.horizontalList}*/}
-            {/*    inverted    // 최근 운동기록이 맨 오른쪽에 보이도록*/}
-            {/*    renderItem={({ item }) => <RecentExerciseCard exercise={item} />}*/}
-            {/*/>*/}
+            <ExerciseChartScroll chartDatas={exerciseChartDatas}/>
 
             {/* 하단 루틴 카드 리스트 */}
             <FlatList
