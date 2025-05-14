@@ -23,8 +23,8 @@ export default Header;
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingHorizontal: 4,
-        paddingVertical: 4,
+        paddingHorizontal: 6,
+        marginBottom: 8,
         alignItems: 'center',
         justifyContent: 'space-between',
         borderBottomWidth: 1,
@@ -33,14 +33,14 @@ const styles = StyleSheet.create({
     },
     logoSection: {
         paddingVertical: 2,
-        paddingHorizontal: 12,
+        paddingHorizontal: 4,
     },
     logoImg: {
         width: 40,
     },
     proSection: {
         paddingVertical: 2,
-        paddingHorizontal: 12,
+        paddingHorizontal: 4,
     },
     proMode: {
         fontSize: 16,
