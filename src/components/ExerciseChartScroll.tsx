@@ -19,7 +19,6 @@ const ExerciseChartScroll = ({ chartDatas }: Props) => {
                         data={item}
                         width={280}
                         height={176}
-                        withVerticalLabels={false}
                         chartConfig={{
                             backgroundColor: '#fff',
                             backgroundGradientFrom: '#fff',
@@ -28,6 +27,8 @@ const ExerciseChartScroll = ({ chartDatas }: Props) => {
                             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
                             labelColor: () => '#333',
                         }}
+                        withVerticalLabels={false}
+                        withShadow={false}
                     />
                 </View>
             )}

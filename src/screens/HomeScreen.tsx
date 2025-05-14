@@ -29,17 +29,17 @@ const exerciseChartDatas: ExerciseChartData[] = [
         datasets: [
             {
                 data: [10000, 10030, 9990, 10010],
-                color: () => 'rgb(255, 99, 132)',
+                color: () => '#0367FC',
                 strokeWidth: 2,
             },
             {
                 data: [5100, 4990, 5050, 5040],
-                color: () => 'rgb(54, 162, 23)',
+                color: () => '#D2F801',
                 strokeWidth: 2,
             },
             {
                 data: [6750, 6800, 6850, 6900],
-                color: () => 'rgb(75, 192, 192)',
+                color: () => '#161616',
                 strokeWidth: 2,
             },
         ],
