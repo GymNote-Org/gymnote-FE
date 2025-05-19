@@ -25,6 +25,7 @@ const dummyRoutines = [
 
 const exerciseChartDatas: ExerciseChartData[] = [
     {
+        chart: 'line',
         labels: [],
         datasets: [
             {
@@ -43,8 +44,16 @@ const exerciseChartDatas: ExerciseChartData[] = [
                 strokeWidth: 2,
             },
         ],
+        radarDatas: [],
         legend: ['루틴 A', '루틴 B', '루틴 C'],
-    }
+    },
+    {
+        chart: 'radar',
+        labels: ["가슴", "등", "어깨", "복근", "허벅지", "엉덩이"],
+        datasets: [],
+        radarDatas: [0.7, 0.6, 0.9, 0.5, 0.3, 0.8],
+        legend: [],
+    },
 ];
 
 /**
@@ -62,67 +71,69 @@ export default function HomeScreen() {
         <View style={styles.container}>
             <Header />
 
-            {/* 유저 정보 카드 */}
-            <View style={styles.userPersonalBox}>
-                <Text style={{ fontSize: 14, color: '#0367FC', }}>트랄랄레로 트랄랄라</Text>
-                <View style={styles.userSocialIcons}>
-                    <Image
-                        source={require('../assets/sns_instagram.png')}
-                        style={styles.snsIconImg}
-                        resizeMode="contain"
-                    />
-                    <Image
-                        source={require('../assets/sns_facebook.png')}
-                        style={styles.snsIconImg}
-                        resizeMode="contain"
-                    />
+            <ScrollView>
+                {/* 유저 정보 카드 */}
+                <View style={styles.userPersonalBox}>
+                    <Text style={{ fontSize: 14, color: '#0367FC', }}>트랄랄레로 트랄랄라</Text>
+                    <View style={styles.userSocialIcons}>
+                        <Image
+                            source={require('../assets/sns_instagram.png')}
+                            style={styles.snsIconImg}
+                            resizeMode="contain"
+                        />
+                        <Image
+                            source={require('../assets/sns_facebook.png')}
+                            style={styles.snsIconImg}
+                            resizeMode="contain"
+                        />
+                    </View>
                 </View>
-            </View>
-            <View style={styles.userCard}>
-                <View style={styles.avatarBox}>
-                    <Image
-                        source={require('../assets/default-avatar.png')}
-                        style={styles.avatarImg}
-                        resizeMode="contain"
-                    />
-                </View>
-                <View style={styles.userInfoBox}>
-                    <Text style={styles.userGoalText}>운동목표: 근육량 증가</Text>
-                    <Text style={styles.userExerciseLogTitle}>이전운동</Text>
-                    <ScrollView style={{ height: 120 }}>
-                        {dummyRecentExerciseLogs.map((exerciseLog, logIdx) => (
-                            <View style={styles.userExerciseLogContainer} key={logIdx.toString()}>
-                                <View>
-                                    <Text style={styles.userExerciseLogTextImportant}>- {exerciseLog.title}</Text>
-                                    <Text style={styles.userExerciseLogTextPlain}>{exerciseLog.date}</Text>
+                <View style={styles.userCard}>
+                    <View style={styles.avatarBox}>
+                        <Image
+                            source={require('../assets/default-avatar.png')}
+                            style={styles.avatarImg}
+                            resizeMode="contain"
+                        />
+                    </View>
+                    <View style={styles.userInfoBox}>
+                        <Text style={styles.userGoalText}>운동목표: 근육량 증가</Text>
+                        <Text style={styles.userExerciseLogTitle}>이전운동</Text>
+                        <ScrollView style={{ height: 120 }}>
+                            {dummyRecentExerciseLogs.map((exerciseLog, logIdx) => (
+                                <View style={styles.userExerciseLogContainer} key={logIdx.toString()}>
+                                    <View>
+                                        <Text style={styles.userExerciseLogTextImportant}>- {exerciseLog.title}</Text>
+                                        <Text style={styles.userExerciseLogTextPlain}>{exerciseLog.date}</Text>
+                                    </View>
+                                    <View>
+                                        <Text style={styles.userExerciseLogTextPlain}>{exerciseLog.duration}</Text>
+                                        <Text style={styles.userExerciseLogTextImportant}>{exerciseLog.setCounts} SET 총볼륨 {exerciseLog.volume}</Text>
+                                    </View>
                                 </View>
-                                <View>
-                                    <Text style={styles.userExerciseLogTextPlain}>{exerciseLog.duration}</Text>
-                                    <Text style={styles.userExerciseLogTextImportant}>{exerciseLog.setCounts} SET 총볼륨 {exerciseLog.volume}</Text>
-                                </View>
-                            </View>
-                        ))}
-                    </ScrollView>
+                            ))}
+                        </ScrollView>
+                    </View>
                 </View>
-            </View>
 
-            {/* 최근 운동 루틴 카드 리스트 */}
-            <ExerciseChartScroll chartDatas={exerciseChartDatas}/>
+                {/* 최근 운동 루틴 카드 리스트 */}
+                <ExerciseChartScroll chartDatas={exerciseChartDatas}/>
 
-            {/* 하단 루틴 카드 리스트 */}
-            <FlatList
-                data={dummyRoutines} // + 버튼 포함
-                keyExtractor={(item) => item.id.toString()}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.horizontalList}
-                renderItem={({ item, index }) => {
-                    if ('isAddCard' in item && item.isAddCard) {    // isAddCard가 true이면 루틴 추가 버튼 카드 렌더링
-                        return <RoutineCard isAddCard onPress={handleAddRoutine} index={index} />;
-                    }
-                    return <RoutineCard id={item.id} title={item.title} description={item.description} index={index} />;
-                }}
-            />
+                {/* 하단 루틴 카드 리스트 */}
+                <FlatList
+                    data={dummyRoutines} // + 버튼 포함
+                    keyExtractor={(item) => item.id.toString()}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.horizontalList}
+                    renderItem={({ item, index }) => {
+                        if ('isAddCard' in item && item.isAddCard) {    // isAddCard가 true이면 루틴 추가 버튼 카드 렌더링
+                            return <RoutineCard isAddCard onPress={handleAddRoutine} index={index} />;
+                        }
+                        return <RoutineCard id={item.id} title={item.title} description={item.description} index={index} />;
+                    }}
+                />
+            </ScrollView>
 
             <Footer />
         </View>

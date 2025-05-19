@@ -1,10 +1,12 @@
 export type ExerciseChartData = {
-    labels: string[];
-    datasets: dataSet[];
-    legend: string[];
+    chart: string;
+    labels: string[];   // Line, Radar 차트 공통
+    datasets: lineChartDataSet[];   // Line 차트
+    radarDatas: number[];   // Radar 차트
+    legend: string[];   // Line 차트
 };
 
-type dataSet = {
+type lineChartDataSet = {
     data: number[];
     color: () => string;
     strokeWidth: number;
